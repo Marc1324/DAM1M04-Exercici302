@@ -8,6 +8,7 @@ const pool = mysql.createPool({
   database: 'sakila',
   waitForConnections: true,
   connectionLimit: 10
+  
 });
 
 module.exports = pool.promise();

@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 // --- RUTES ---
 
-// B) Pàgina Principal -> index.hbs (5 primeres pel·lícules i 5 categories)
+// B) Pàgina Principal -> index.hbs
 app.get('/', async (req, res) => {
     try {
         const [movies] = await db.query(`
@@ -37,34 +37,37 @@ app.get('/', async (req, res) => {
     }
 });
 
-// C) Pàgina Pel·lícules -> informe.hbs (15 primeres pel·lícules amb actors)
+// C) RUTA ACTUALITZADA: Pàgina Pel·lícules -> movies.hbs
+// Mostra les 15 primeres pel·lícules amb la seva info i llista d'actors
 app.get('/movies', async (req, res) => {
     try {
         const [movies] = await db.query(`
-            SELECT f.title, f.release_year, GROUP_CONCAT(a.first_name, ' ', a.last_name SEPARATOR ', ') as actors 
+            SELECT f.title, f.description, f.release_year, f.rating, 
+                   GROUP_CONCAT(CONCAT(a.first_name, ' ', a.last_name) SEPARATOR ', ') as actors 
             FROM film f 
-            JOIN film_actor fa ON f.film_id = fa.film_id 
-            JOIN actor a ON fa.actor_id = a.actor_id 
-            GROUP BY f.film_id LIMIT 15`);
-        res.render('informe', { ...commonData, movies });
+            LEFT JOIN film_actor fa ON f.film_id = fa.film_id 
+            LEFT JOIN actor a ON fa.actor_id = a.actor_id 
+            GROUP BY f.film_id 
+            LIMIT 15`);
+            
+        // Canviem 'informe' per 'movies' segons l'enunciat
+        res.render('movies', { ...commonData, movies });
     } catch (err) { 
-        res.status(500).send("Error a Movies: " + err.message); 
+        res.status(500).send("Error a la ruta /movies: " + err.message); 
     }
 });
 
-// D) Ruta Customers -> customers.hbs (25 clients amb els seus 5 lloguers)
+// D) Ruta Customers -> customers.hbs
 app.get('/customers', async (req, res) => {
     try {
-        // 1. Obtenim els 25 primers clients
         const [customers] = await db.query('SELECT customer_id, first_name, last_name FROM customer LIMIT 25');
         
-        // 2. Per a cada client, busquem els seus 5 primers lloguers
         for (let c of customers) {
             const [rentals] = await db.query(
                 'SELECT rental_date FROM rental WHERE customer_id = ? LIMIT 5', 
                 [c.customer_id]
             );
-            c.rentals = rentals; // Afegim l'array de lloguers a l'objecte del client
+            c.rentals = rentals;
         }
         
         res.render('customers', { ...commonData, customers });

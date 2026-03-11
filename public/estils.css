@@ -1,41 +1,100 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
 
+/* Configuració general */
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f8f9fa;
+    margin: 0;
     padding: 20px;
+    color: #333;
 }
 
-.card-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+h1 { 
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-weight: 700;
 }
 
-.card {
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    width: 250px;
-}
-
-h1 { color: #333; }
-footer { margin-top: 40px; font-size: 0.8em; color: #777; }
-.grid-container {
+/* Contenidor de la graella (Grid) */
+.movies-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.card {
+/* Targetes de pel·lícula */
+.movie-card {
     background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    padding: 15px;
-    border-top: 4px solid #007bff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    padding: 20px;
+    border-top: 5px solid #007bff; /* Color blau destacat */
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-h3 { margin-top: 0; color: #333; }
-ul { padding-left: 20px; font-size: 0.9em; }
+.movie-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Detalls interns */
+.movie-card h2 {
+    font-size: 1.25rem;
+    margin: 0 0 10px 0;
+    color: #0056b3;
+}
+
+.movie-info {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.movie-description {
+    font-size: 0.95em;
+    line-height: 1.5;
+    color: #444;
+    margin-bottom: 15px;
+    /* Limita el text a 3 línies */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+}
+
+/* Llista d'actors */
+.actors-list {
+    margin-top: auto;
+    background: #f1f8ff;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.actors-list strong {
+    display: block;
+    font-size: 0.85em;
+    color: #007bff;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.actors-names {
+    font-size: 0.85em;
+    font-style: italic;
+    color: #555;
+}
+
+/* Footer */
+footer { 
+    text-align: center;
+    margin-top: 50px; 
+    padding: 20px;
+    font-size: 0.85em; 
+    color: #95a5a6; 
+    border-top: 1px solid #ddd;
+}
